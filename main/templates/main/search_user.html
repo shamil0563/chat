@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+{% load bootstrap4 %}
+{% block searchform %}
+{% endblock %}
+{% block content %}
+
+<div class="container-fuild mb-2 mt-2">
+  <div class="row">
+    <div class="col">&nbsp</div>
+    <form class="col-md-auto form-inline">
+      {% bootstrap_form form show_label=False %}
+      <button type="submit" class="btn btn-dark">Найти</button>
+    </form>
+  </div>
+</div>
+{% if usersadd %}
+{% for useradd in usersadd %}
+<div class="card mb-2">
+  <div class="card-header">
+    {{ useradd.username }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ useradd.first_name }} {{ useradd.last_name }}</h5>
+    {% if useradd.address %}<p class="card-text">Город: {{ useradd.address }}</p>{% endif %}
+    {% if useradd.birth_date %}<p class="card-text">Возраст: {{ useradd.birth_date }}</p>{% endif %}
+   {% if useradd.pk not in friends %}
+    <a href="{% url 'main:add_friend2' slug=useradd.username %}"><button type="submit" class="btn btn-dark">Добавить в друзья</button></a>
+    {% else %}
+      <a href="{% url 'main:add_friend2' slug=useradd.username %}"><button type="submit" class="btn btn-outline-secondary" disabled>Добавить в друзья</button></a>
+    {% endif %}
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock %}

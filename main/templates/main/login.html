@@ -1,0 +1,18 @@
+{% extends "main/base.html" %}
+{% load trans from i18n %}
+{% block title %}Вход{% endblock %}
+{% load bootstrap4 %}
+{% block content %}
+<h2>Вход</h2>
+{% if user.is_authenticated %}
+<p>Вы уже выполнили вход</p>
+{% else %}
+<form method="post">
+  {% csrf_token %}
+  {% bootstrap_form form layout='horizontal' %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <button type="submit" class="btn btn-dark">Войти</button>
+</form>
+  Войти с помощью <a href="/login/vk-oauth2"><img src="https://www.ph4.ru/DL/LOGO/v/vk_.gif" width="20" height="20" class="avatar-3" data-toggle="tooltip" title="{% trans 'Login via VKontakte' %}"></a>
+{% endif %}
+{% endblock %}

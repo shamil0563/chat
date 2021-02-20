@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+
+{% load bootstrap4 %}
+{% block title %}Профиль пользователя{% endblock %}
+
+
+{% block content %}
+<h2>Профиль пользователя {{ user.username }}</h2>
+{% if user.first_name and user.last_name %}
+<p>Здравстуйте, {{ user.first_name }} {{ user.last_name }}!</p>
+{% else %}
+
+<p>Здравстуйте!</p>
+{% endif %}
+<h3>Запросы в друзья</h3>
+
+{% for friend in friends %}
+<div class="card bg-light mt-3">
+  <div class="card-header">
+    {{ friend.friend.username }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ friend.user.first_name }} {{ friend.user.last_name }}</h5>
+    {% if not friend.is_sender and friend.friend != user %}<a href="{% url 'main:request_confirm' slug=friend.slug %}" class="btn btn-dark my-2 my-sm-0">Принять</a>{% endif %}
+    <a href="{% url 'main:delete_friend' slug=friend.slug %}" class="btn btn-dark my-2 my-sm-0">Отклонить</a>
+  </div>
+
+</div>
+{% endfor %}
+{% endblock %}

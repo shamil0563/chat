@@ -1,0 +1,12 @@
+{% extends "main/base.html" %}
+{% block title %}Регистрация{% endblock %}
+{% load bootstrap4 %}
+{% block content %}
+<h2>Регистрация нового пользователя</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% bootstrap_form form layout='horizontal' %}
+  <input type="hidden" name="next" value="{{ next }}">
+  {% buttons submit='Регистрация' %}{% endbuttons %}
+</form>
+{% endblock %}

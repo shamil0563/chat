@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+{% load bootstrap4 %}
+
+  {% block title %}{{ user.username }}{% endblock %}
+
+    {% block content %}
+    {% if user.is_authenticated %}
+          <div class="col-lg-4 col-md-6 mb-4 mt-3">
+            <div class="card h-100">
+              {% if user.image %}
+              <img class="card-img-top" src="{{ user.image.url }}">
+              {% elif not user.image %}
+              <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+              {% endif %}
+              <div class="card-body">
+                <h4 class="card-title">
+                  <p>{{user.first_name}} {{ user.last_name }}</p>
+                </h4>
+                <p class="card-text">Город/Место проживания: {{ user.address }}</p><br>
+                <p class="card-text">День рождения: {{ user.birth_date }}</p><br>
+              </div>
+              <div class="card-footer">
+                <a class="nav-link" href="{% url 'main:profile_change' %}"><button type="submit" class="btn btn-dark">Изменить</button></a>
+              </div>
+            </div>
+          </div>
+    {% else %}
+    Привет
+    {% endif %}
+    {% endblock %}
