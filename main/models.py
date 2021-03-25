@@ -1,6 +1,7 @@
 from django.db import models
 from .utilities import get_timestamp_path
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import Group
 
 
 class AdvUser(AbstractUser):
@@ -23,3 +24,8 @@ class Friend(models.Model):
     friend = models.ForeignKey(AdvUser, related_name='friends', on_delete=models.CASCADE)
     slug = models.SlugField(unique=True)
     add_friend = models.BooleanField(default=False, verbose_name='Добавить в друзья?')
+
+
+class Message(models.Model):
+    text = models.CharField(max_length=255)
+# Create your models here.

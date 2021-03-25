@@ -1,0 +1,54 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block title %}{{ user.username }} - Room{% endblock %}
+{% block app_css %}
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+{% endblock app_css %}
+{% block content %}
+    <input id="message-input" type="text" class="form-control mt-1" size="100" placeholder="Введите сообщение"><br>
+    <input id="btn-submit" type="button" class="btn btn-dark" value="Написать">
+    <div id="chat">
+
+    </div>
+    <script>
+        let chat = document.querySelector("#chat")
+        let input = document.querySelector("#message-input")
+        let btnSubmit = document.querySelector("#btn-submit")
+        //alert('{{ request.user.username|title }}')
+        username = '{{ request.user.username|title }}'
+        const webSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/');
+
+        webSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            if (data.username == username) {
+                var msg1 = '<div class="right-msg-container">\n' +
+                                '<div class="s-message">\n' +
+                                    '<div class="s-msg">' + data.message + '</div>\n' +
+                                '</div>\n' +
+                                '<div class="s-tail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 13" preserveAspectRatio="none" width="8" height="13"><path opacity=".5" d="M5.188 1H0v11.193l6.467-8.625C7.526 2.156 6.958 1 5.188 1z"></path><path fill="#dcf8c6ff" d="M5.188 0H0v11.193l6.467-8.625C7.526 1.156 6.958 0 5.188 0z"></path></svg></div>\n' +
+                            '</div>'
+            } else {
+                var msg1 = '<div class="left-msg-container">\n' +
+                    '<div className="r-tail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 13" width="8" height="13"><path opacity=".5" fill="#dcf8c6ff" d="M1.533 3.568L8 12.193V1H2.812C1.042 1 .474 2.156 1.533 3.568z"></path><path fill="#dcf8c6ff" d="M1.533 2.568L8 11.193V0H2.812C1.042 0 .474 1.156 1.533 2.568z"></path></svg></div>\n' +
+
+                '<div class="r-message" >\n' +
+                                    '<div class="r-user">' + data.username + '</div>\n' +
+                                    '<div class="s-msg">' + data.message + '</div>\n' +
+                                '</div>\n' +
+                            '</div>'
+            }
+            chat.innerHTML += msg1
+        };
+
+
+        btnSubmit.addEventListener("click", () => {
+            message = input.value;
+            webSocket.send(JSON.stringify({
+                'message': message
+            }));
+            input.value = '';
+        })
+    </script>
+
+{% endblock %}

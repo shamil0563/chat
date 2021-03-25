@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'bootstrap_datepicker_plus',
     'rest_framework',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +76,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'miniChat.wsgi.application'
-
-
+ASGI_APPLICATION = 'miniChat.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    }
+}
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -112,7 +117,7 @@ AUTH_USER_MODEL = 'main.AdvUser'
 BOOTSTRAP4 = {
 'include_jquery': True,
 }
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
@@ -127,6 +132,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 DATE_INPUT_FORMATS = ['%d-%m-%Y']
-STATIC_URL = '/static/'
+STATIC_URL = 'main/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

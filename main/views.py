@@ -1,37 +1,106 @@
+from asgiref.sync import sync_to_async
+from dill import settings
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.views.generic import ListView, TemplateView, CreateView, UpdateView, DeleteView
+from rest_framework import viewsets, permissions, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import generics
+from rest_framework.decorators import api_view
+from django.views.generic import ListView, TemplateView, CreateView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.http import HttpResponseRedirect, JsonResponse
+from asgiref.sync import sync_to_async
+from tortoise import Tortoise
+from django.conf import settings
 from .forms import *
+from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from .serializers import *
 from django.db.models import Q
 from django.contrib import messages
-import logging
+from django.shortcuts import render
 
-def api_user(request):
-    if request.method == 'GET':
-        users = AdvUser.objects.all()
-        serializer = UserSerializers(users, many=True)
-        return JsonResponse(serializer.data, safe=False)
+
+class UserViewSetModel(viewsets.ModelViewSet):
+     queryset = AdvUser.objects.all()
+     serializer_class = UserSerializers
+
+
+class UsersViewRest(TemplateView):
+    template_name = 'main/users.html'
+
+#
+#
+# class UserViewSet(APIView):
+#
+#     def get(self, request):
+#         users = AdvUser.objects.all()
+#
+#         serializer = UserSerializers(users, many=True)
+#         return Response(serializer.data)
+#
+#     def post(self, request):
+#         serializer = UserSerializers(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#
+#
+# class APIRubrics(generics.ListCreateAPIView):
+#     queryset = AdvUser.objects.all()
+#     serializer_class = UserSerializers
+#
+#
+# class AAPIRubricDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = AdvUser.objects.all()
+#     serializer_class = UserSerializers
+
+
+# @api_view(['GET'])
+# def api_user(request):
+#     """REST-FRAMEWORK"""
+#     if request.method == 'GET':
+#         users = AdvUser.objects.all()
+#         serializer = UserSerializers(users, many=True)
+#         return Response(serializer.data)
+# #
+# #
+#
+#
+# @api_view(['GET'])
+# def api_user_detail(request, pk):
+#     if request.method == 'GET':
+#         user = AdvUser.objects.get(pk=pk)
+#         serializer = UserSerializers(user)
+#         return Response(serializer.data)
 
 
 class FriendListView(TemplateView):
+    """Поиск пользователей"""
     template_name = 'main/search_user.html'
 
 
 class IndexView(TemplateView):
+    """Главная страница"""
     template_name = 'main/index.html'
 
 
 class UserLoginView(LoginView):
+    """Страница входа"""
     template_name = 'main/login.html'
 
 
 def by_user_processor(request):
+    """"""
     usersadd = AdvUser.objects.exclude(pk=request.user.pk)
     if 'keyword' in request.GET:
         keyword = request.GET['keyword']
@@ -47,10 +116,12 @@ def by_user_processor(request):
 
 
 class AboutView(TemplateView):
+    """О нас"""
     template_name = 'main/about.html'
 
 
 def add_friend2(request, slug):
+    """Добавление в друзья"""
     friend = Friend()
     friend.user = request.user
     friend.friend = AdvUser.objects.get(username=slug)
@@ -71,6 +142,7 @@ def add_friend2(request, slug):
 
 
 def request_confirm(request, slug):
+    """Подтверждение запроса в друзья"""
     friend1 = Friend.objects.get(user=request.user, slug=slug)
     friend2 = Friend.objects.get(friend=request.user, slug=friend1.friend.username + 'and' + request.user.username)
     friend1.add_friend = True
@@ -82,6 +154,7 @@ def request_confirm(request, slug):
 
 
 class RegisterView(SuccessMessageMixin, CreateView):
+    """Подтверждение регистрации"""
     model = AdvUser
     template_name = 'main/register.html'
     success_message = 'Вы зарегистрированы!'
@@ -89,7 +162,12 @@ class RegisterView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('main:index')
 
 
+def room(request):
+    return render(request, 'main/room.html')
+
+
 class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    """Изменение данных пользователей"""
     model = AdvUser
     template_name = 'main/change_user_info.html'
     form_class = ChangeUserInfoForm
@@ -103,6 +181,7 @@ class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 
 
 class DeleteFriendView(DeleteView):
+    """Удаление друга"""
     model = Friend
     template_name = 'main/profile_friends_delete.html'
     success_url = reverse_lazy('main:request_friend')
@@ -118,6 +197,7 @@ class DeleteFriendView(DeleteView):
 
 
 class FriendRequestView(LoginRequiredMixin, ListView):
+    """"""
     model = Friend
     template_name = 'main/request_friend.html'
     context_object_name = 'friends'
@@ -128,6 +208,7 @@ class FriendRequestView(LoginRequiredMixin, ListView):
 
 
 class FriendView(LoginRequiredMixin, ListView):
+    """"""
     model = Friend
     template_name = 'main/friends.html'
     context_object_name = 'friends'

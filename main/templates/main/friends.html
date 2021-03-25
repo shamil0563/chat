@@ -5,14 +5,10 @@
 
 
 {% block content %}
+
 <h2>Профиль пользователя {{ user.username }}</h2>
 <a class="nav-link" href="{% url 'main:request_friend' %}"><button type="submit" class="btn btn-dark">Запросы</button></a>
 <a class="nav-link" href="{% url 'main:list_user' %}"><button type="submit" class="btn btn-dark">Добавить друга</button></a>
-{% if user.first_name and user.last_name %}
-<p>Здравстуйте, {{ user.first_name }} {{ user.last_name }}!</p>
-
-{% else %}
-{% endif %}
 <h3>Ваши друзья</h3>
 
 {% for friend in friends %}
