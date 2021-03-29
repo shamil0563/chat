@@ -496,7 +496,7 @@ svg {
                          "s-msg";
 
     justify-self:right;
-    background-color: #dcf8c6ff;
+    background-color: #5f605f;
     border-radius: 7.5px;
     border-top-right-radius: 0;
     /*box-shadow: 0 1px .5px rgb(31, 30, 30),.13); */
@@ -512,7 +512,7 @@ svg {
                          "r-msg";
 
     justify-self:left;
-    background-color: #dcf8c6ff;
+    background-color: #5f605f;
     border-radius: 7.5px;
     border-top-left-radius: 0;
     /*box-shadow: 0 1px .5px rgb(31, 30, 30),.13); */
@@ -520,6 +520,7 @@ svg {
 }
 
 .s-msg {
+    color: aquamarine;
     grid-area: s-msg;
     font-size: .90rem;
 }
@@ -547,6 +548,7 @@ svg {
 }
 
 .r-user {
+    color: rgba(255,255,255,.5);
     grid-area: r-user;
     font-size: .9rem;
     font-weight: bold;

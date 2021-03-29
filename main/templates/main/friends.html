@@ -18,8 +18,8 @@
   </div>
   <div class="card-body">
     <h5 class="card-title">{{ friend.user.first_name }}{{ friend.last_name }}</h5>
-    <a href="#" class="btn btn-outline-success my-2 my-sm-0">Читать полностью</a>
-    <a href="{% url 'main:delete_friend' slug=friend.slug %}" class="btn btn-outline-success my-2 my-sm-0">Удалить</a>
+    <a href="{% url 'main:delete_friend' slug=friend.slug %}" class="btn btn-outline-dark my-2 my-sm-0">Удалить</a>
+    <a href="#" class="btn btn-dark">Написать</a>
   </div>
 
 </div>

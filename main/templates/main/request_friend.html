@@ -21,8 +21,9 @@
   </div>
   <div class="card-body">
     <h5 class="card-title">{{ friend.user.first_name }} {{ friend.user.last_name }}</h5>
-    {% if not friend.is_sender and friend.friend != user %}<a href="{% url 'main:request_confirm' slug=friend.slug %}" class="btn btn-dark my-2 my-sm-0">Принять</a>{% endif %}
+    {% if friend.sender != request.user %}<a href="{% url 'main:request_confirm' slug=friend.slug %}" class="btn btn-dark my-2 my-sm-0">Принять</a>{% endif %}
     <a href="{% url 'main:delete_friend' slug=friend.slug %}" class="btn btn-dark my-2 my-sm-0">Отклонить</a>
+    <a href="#" class="btn btn-dark">Написать</a>
   </div>
 
 </div>

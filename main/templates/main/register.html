@@ -1,12 +1,15 @@
 {% extends "main/base.html" %}
 {% block title %}Регистрация{% endblock %}
 {% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
 {% block content %}
 <h2>Регистрация нового пользователя</h2>
 <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
   {% bootstrap_form form layout='horizontal' %}
+  {{ form.media }}
   <input type="hidden" name="next" value="{{ next }}">
-  {% buttons submit='Регистрация' %}{% endbuttons %}
+  <button type="submit" class="btn btn-dark">Регистрация</button>
 </form>
 {% endblock %}

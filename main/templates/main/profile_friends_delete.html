@@ -1,26 +1,14 @@
 {% extends "main/base.html" %}
 
 {% load bootstrap4 %}
-{% block title %}Профиль пользователя - Отклонение дружбы{% endblock %}
+{% block title %}Профиль пользователя - Удаление друга{% endblock %}
 
 {% block content %}
-{% if friend.add_friend == False and friend.sender == user %}
-<h2>Отмена запроса {{ friend.friend }}</h2>
-<form method="post">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-dark">Отменить</button>
-</form>
-{% elif friend.add_friend == False and friend.sender != user %}
-<h2>Отклонить запрос от {{ friend.friend }}</h2>
-<form method="post">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-dark">Отклонить</button>
-</form>
-{% else %}
+
 <h2>Удаление друга {{ friend.friend }}</h2>
 <form method="post">
   {% csrf_token %}
   <button type="submit" class="btn btn-dark">Удалить</button>
 </form>
-{% endif %}
+
 {% endblock %}

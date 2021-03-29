@@ -18,6 +18,9 @@ class RegistrationForm(forms.ModelForm):
     password2 = forms.CharField(label='Пароль (повторно)', widget=forms.PasswordInput,
                                 help_text='Введите тот же самый пароль еще раз')
 
+    birth_date = forms.DateField(input_formats=DATE_INPUT_FORMATS, widget=DatePickerInput(format='%d-%m-%Y'))
+
+
     def clean_password1(self):
         password1 = self.cleaned_data['password1']
 

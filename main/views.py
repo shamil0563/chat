@@ -100,7 +100,7 @@ class UserLoginView(LoginView):
 
 
 def by_user_processor(request):
-    """"""
+    """Api User"""
     usersadd = AdvUser.objects.exclude(pk=request.user.pk)
     if 'keyword' in request.GET:
         keyword = request.GET['keyword']
@@ -162,8 +162,19 @@ class RegisterView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('main:index')
 
 
+@login_required()
 def room(request):
-    return render(request, 'main/room.html')
+    """Чат комната"""
+    return render(request, 'main/message.html')
+
+
+@login_required()
+def message(request, slug):
+    """Чат комната"""
+    if ChatGroup.objects.get(slug=slug):
+        chatgroup = ChatGroup.objects.get(slug=slug)
+
+    return render(request, 'main/message.html', {'chatgroup': chatgroup})
 
 
 class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
@@ -197,7 +208,7 @@ class DeleteFriendView(DeleteView):
 
 
 class FriendRequestView(LoginRequiredMixin, ListView):
-    """"""
+    """Список запросов в друзья"""
     model = Friend
     template_name = 'main/request_friend.html'
     context_object_name = 'friends'
@@ -208,7 +219,7 @@ class FriendRequestView(LoginRequiredMixin, ListView):
 
 
 class FriendView(LoginRequiredMixin, ListView):
-    """"""
+    """Список друзей"""
     model = Friend
     template_name = 'main/friends.html'
     context_object_name = 'friends'
