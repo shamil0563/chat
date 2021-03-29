@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social_django',
     'bootstrap4',
     'main',
     'django_cleanup',
@@ -45,6 +44,7 @@ INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
     'rest_framework',
     'channels',
+
 ]
 
 MIDDLEWARE = [
