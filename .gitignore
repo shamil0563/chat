@@ -1,9 +1,5 @@
 *.pyc
 *~
 __pycache__
-venv
 db.sqlite3
 media
-db.sqlite3.tortoise
-db.sqlite3.tortoise-shm
-db.sqlite3.tortoise-wal

@@ -17,7 +17,6 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from asgiref.sync import sync_to_async
-from tortoise import Tortoise
 from django.conf import settings
 from .forms import *
 from .models import *
