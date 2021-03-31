@@ -26,7 +26,6 @@ urlpatterns = [
     path('accounts/friends/list/<str:slug>', add_friend2, name='add_friend2'),
     path('account/friends/list/<int:pk>', correspondence, name='correspondence'),
     path('room/', room, name='room'),
-
     path('room/<str:slug>', message, name='message'),
     path('api/', include(router.urls)),
 ]

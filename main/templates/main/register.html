@@ -4,6 +4,7 @@
 {% bootstrap_css %}
 {% bootstrap_javascript jquery='full' %}
 {% block content %}
+{% load static %}
 <h2>Регистрация нового пользователя</h2>
 <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
