@@ -8,7 +8,7 @@ from django.forms.widgets import DateInput
 from django.shortcuts import get_object_or_404
 import sys
 sys.path.append('..')
-from chat.miniChat.settings import *
+from miniChat.settings import *
 
 
 class RegistrationForm(forms.ModelForm):
