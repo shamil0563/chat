@@ -1,3 +1,9 @@
+*.pyc
+*~
+__pycache__
 venv
-main/migrations/
 db.sqlite3
+media
+db.sqlite3.tortoise
+db.sqlite3.tortoise-shm
+db.sqlite3.tortoise-wal

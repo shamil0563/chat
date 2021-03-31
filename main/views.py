@@ -1,7 +1,7 @@
 from asgiref.sync import sync_to_async
 from dill import settings
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotFound, Http404, HttpResponse
 from rest_framework import viewsets, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -170,11 +170,47 @@ def room(request):
 
 @login_required()
 def message(request, slug):
+
     """Чат комната"""
     if ChatGroup.objects.get(slug=slug):
         chatgroup = ChatGroup.objects.get(slug=slug)
+        if request.user.username not in chatgroup.slug:
+            return HttpResponse(":)")
+        if Message.objects.filter(group=chatgroup).exists():
+            chat_message = Message.objects.filter(group=chatgroup)
 
-    return render(request, 'main/message.html', {'chatgroup': chatgroup})
+            return render(request, 'main/message.html', {'chatgroup': chatgroup, 'chat_message': chat_message})
+        else:
+            return render(request, 'main/message.html', {'chatgroup': chatgroup})
+
+
+class ListCorrespondenceView(LoginRequiredMixin, ListView):
+    model = ChatGroup
+    template_name = 'main/list_correspondence.html'
+    context_object_name = 'correspondences'
+
+    def get_queryset(self):
+        if ChatGroup.objects.filter(slug__startswith=self.request.user.username).exists():
+            queryset = ChatGroup.objects.filter(slug__startswith=self.request.user.username)
+        elif ChatGroup.objects.filter(slug__endswith=self.request.user.username).exists():
+            queryset = ChatGroup.objects.filter(slug__endswith=self.request.user.username)
+        return queryset
+
+
+@login_required()
+def correspondence(request, pk):
+
+    usr_msg = AdvUser.objects.get(pk=pk)
+    slug1 = request.user.username + 'and' + usr_msg.username
+    slug2 = usr_msg.username + 'and' + request.user.username
+    if ChatGroup.objects.filter(slug=slug1).exists():
+
+        return HttpResponseRedirect(reverse('main:message', args=[slug1]))
+    elif ChatGroup.objects.filter(slug=slug2).exists():
+        return HttpResponseRedirect(reverse('main:message', args=[slug2]))
+    else:
+        ChatGroup.objects.create(slug=slug1, name=slug1, description=slug1, user1=request.user, user2=usr_msg)
+        return HttpResponseRedirect(reverse('main:message', args=[slug1]))
 
 
 class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):

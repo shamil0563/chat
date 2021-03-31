@@ -28,6 +28,7 @@ class Message(models.Model):
     class Meta:
         db_table = 'Message'
     text = models.CharField(max_length=255)
+    sender = models.ForeignKey(AdvUser, on_delete=models.CASCADE)
     group = models.ForeignKey('ChatGroup', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -45,6 +46,9 @@ class ChatGroup(Group):
     slug = models.SlugField(unique=True)
     user1 = models.ForeignKey(AdvUser, related_name='recipient', on_delete=models.CASCADE)
     user2 = models.ForeignKey(AdvUser, related_name='message_sender', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.description
 
     def get_absolute_url(self):
         return '/room/%s' % self.slug

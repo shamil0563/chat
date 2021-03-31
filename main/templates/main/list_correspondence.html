@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block title %}{{ user.username }} - Room{% endblock %}
+{% block content %}
+    {% for correspondence in correspondences %}
+        {% if correspondence.user1.username == request.user.username %}
+
+                <div class="card bg-light mt-3">
+                    <div class="card-header">
+                        {{ correspondence.user2.username }}
+                    </div>
+                    <div class="card-body">
+                         <h5 class="card-title">{{ correspondence.message_set.all|first }}</h5>
+                        <a href="#" class="btn btn-dark">Перейти</a>
+                    </div>
+                </div>
+        {% elif correspondence.user2.username == request.user.username %}
+
+                <div class="card bg-light mt-3">
+                    <div class="card-header">
+                        {{ correspondence.user1.username }}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ correspondence.message_set.all|first }}</h5>
+                        <a href="#" class="btn btn-dark">Перейти</a>
+                    </div>
+                </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

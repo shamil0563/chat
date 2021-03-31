@@ -12,6 +12,7 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('users/', UsersViewRest.as_view(), name='rest_user'),
     path('about', AboutView.as_view(), name='about'),
+    path('accounts/messages/', ListCorrespondenceView.as_view(), name='messages'),
     path('accounts/login/', UserLoginView.as_view(), name='login'),
     path('accounts/profile/', IndexView.as_view(), name='profile'),
     path('account/logout/', LogoutView.as_view(next_page="/accounts/login/"), name='logout'),
@@ -23,7 +24,9 @@ urlpatterns = [
     path('accounts/friends/request/<str:slug>/', request_confirm, name='request_confirm'),
     path('accounts/friends/list/', by_user_processor, name='list_user'),
     path('accounts/friends/list/<str:slug>', add_friend2, name='add_friend2'),
+    path('account/friends/list/<int:pk>', correspondence, name='correspondence'),
     path('room/', room, name='room'),
+
     path('room/<str:slug>', message, name='message'),
     path('api/', include(router.urls)),
 ]

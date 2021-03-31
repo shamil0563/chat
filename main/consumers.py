@@ -1,13 +1,13 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from .models import Message
+from .models import Message, ChatGroup, AdvUser
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        self.room_group_name = "1"
+        self.room_group_name = self.scope['url_route']['kwargs']['room_name']
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
@@ -21,14 +21,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     @database_sync_to_async
-    def new_message(self, message):
-        Message.objects.create(text=message)
+    def new_message(self, message, chatslug, user):
+        Message.objects.create(text=message, group=ChatGroup.objects.get(slug=chatslug), sender=AdvUser.objects.get(pk=user))
 
     async def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-
-        await self.new_message(message=message)
+        chatslug = text_data_json['chatslug']
+        user = text_data_json['user']
+        await self.new_message(message=message, chatslug=chatslug, user=user)
 
         await self.channel_layer.group_send(
             self.room_group_name,
