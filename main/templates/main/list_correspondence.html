@@ -3,6 +3,7 @@
 {% load bootstrap4 %}
 {% block title %}{{ user.username }} - Room{% endblock %}
 {% block content %}
+{% if correspondences %}
     {% for correspondence in correspondences %}
         {% if correspondence.user1.username == request.user.username %}
 
@@ -28,4 +29,7 @@
                 </div>
         {% endif %}
     {% endfor %}
+{% else %}
+<p>Вы еще ни с кем не переписывались</p>
+{% endif %}
 {% endblock %}

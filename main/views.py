@@ -189,11 +189,14 @@ class ListCorrespondenceView(LoginRequiredMixin, ListView):
     context_object_name = 'correspondences'
 
     def get_queryset(self):
+
         if ChatGroup.objects.filter(slug__startswith=self.request.user.username).exists():
             queryset = ChatGroup.objects.filter(slug__startswith=self.request.user.username)
+            return queryset
         elif ChatGroup.objects.filter(slug__endswith=self.request.user.username).exists():
             queryset = ChatGroup.objects.filter(slug__endswith=self.request.user.username)
-        return queryset
+
+            return queryset
 
 
 @login_required()
