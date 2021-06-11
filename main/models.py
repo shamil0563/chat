@@ -23,6 +23,9 @@ class Friend(models.Model):
     slug = models.SlugField(unique=True)
     add_friend = models.BooleanField(default=False, verbose_name='Добавить в друзья?')
 
+    def __str__(self):
+        return self.slug
+
 
 class Message(models.Model):
     class Meta:

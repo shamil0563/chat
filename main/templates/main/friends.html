@@ -10,7 +10,7 @@
 <a class="nav-link" href="{% url 'main:request_friend' %}"><button type="submit" class="btn btn-dark">Запросы</button></a>
 <a class="nav-link" href="{% url 'main:list_user' %}"><button type="submit" class="btn btn-dark">Добавить друга</button></a>
 <h3>Ваши друзья</h3>
-
+{% if friends %}
 {% for friend in friends %}
 <div class="card bg-light mt-3">
   <div class="card-header">
@@ -19,9 +19,11 @@
   <div class="card-body">
     <h5 class="card-title">{{ friend.user.first_name }}{{ friend.last_name }}</h5>
     <a href="{% url 'main:delete_friend' slug=friend.slug %}" class="btn btn-outline-dark my-2 my-sm-0">Удалить</a>
-    <a href="#" class="btn btn-dark">Написать</a>
+    <a href="{% url 'main:private_message' pk=friend.friend.pk %}"><button type="submit" class="btn btn-dark">Написать</button></a>
   </div>
-
 </div>
 {% endfor %}
+{% else %}
+<h5>У вас пока нет друзей</h5>
+{% endif %}
 {% endblock %}

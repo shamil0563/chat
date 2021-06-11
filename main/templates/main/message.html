@@ -36,7 +36,7 @@
         //alert('{{ request.user.username|title }}')
         username = '{{ request.user.username|title }}'
         chatslug = '{{ chatgroup.slug }}'
-        const webSocket = new WebSocket('ws://' + 'minichat.pythonanywhere.com' + '/ws/chat/' + chatslug);
+        const webSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + chatslug);
         //const webSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + chatslug);
         webSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);

@@ -1,86 +1,17 @@
-from asgiref.sync import sync_to_async
-from dill import settings
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponseNotFound, Http404, HttpResponse
-from rest_framework import viewsets, permissions, status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import generics
-from rest_framework.decorators import api_view
 from django.views.generic import ListView, TemplateView, CreateView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.http import HttpResponseRedirect, JsonResponse
-from asgiref.sync import sync_to_async
-from django.conf import settings
 from .forms import *
 from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
-from .serializers import *
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render
-
-
-class UserViewSetModel(viewsets.ModelViewSet):
-     queryset = AdvUser.objects.all()
-     serializer_class = UserSerializers
-
-
-class UsersViewRest(TemplateView):
-    template_name = 'main/users.html'
-
-#
-#
-# class UserViewSet(APIView):
-#
-#     def get(self, request):
-#         users = AdvUser.objects.all()
-#
-#         serializer = UserSerializers(users, many=True)
-#         return Response(serializer.data)
-#
-#     def post(self, request):
-#         serializer = UserSerializers(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#
-# class APIRubrics(generics.ListCreateAPIView):
-#     queryset = AdvUser.objects.all()
-#     serializer_class = UserSerializers
-#
-#
-# class AAPIRubricDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = AdvUser.objects.all()
-#     serializer_class = UserSerializers
-
-
-# @api_view(['GET'])
-# def api_user(request):
-#     """REST-FRAMEWORK"""
-#     if request.method == 'GET':
-#         users = AdvUser.objects.all()
-#         serializer = UserSerializers(users, many=True)
-#         return Response(serializer.data)
-# #
-# #
-#
-#
-# @api_view(['GET'])
-# def api_user_detail(request, pk):
-#     if request.method == 'GET':
-#         user = AdvUser.objects.get(pk=pk)
-#         serializer = UserSerializers(user)
-#         return Response(serializer.data)
 
 
 class FriendListView(TemplateView):
@@ -162,14 +93,7 @@ class RegisterView(SuccessMessageMixin, CreateView):
 
 
 @login_required()
-def room(request):
-    """Чат комната"""
-    return render(request, 'main/message.html')
-
-
-@login_required()
 def message(request, slug):
-
     """Чат комната"""
     if ChatGroup.objects.get(slug=slug):
         chatgroup = ChatGroup.objects.get(slug=slug)
@@ -177,7 +101,7 @@ def message(request, slug):
             return HttpResponse(":)")
         if Message.objects.filter(group=chatgroup).exists():
             chat_message = Message.objects.filter(group=chatgroup)
-
+            not_read_chat_message = Message.objects.filter
             return render(request, 'main/message.html', {'chatgroup': chatgroup, 'chat_message': chat_message})
         else:
             return render(request, 'main/message.html', {'chatgroup': chatgroup})
@@ -189,13 +113,12 @@ class ListCorrespondenceView(LoginRequiredMixin, ListView):
     context_object_name = 'correspondences'
 
     def get_queryset(self):
-
         if ChatGroup.objects.filter(slug__startswith=self.request.user.username).exists():
             queryset = ChatGroup.objects.filter(slug__startswith=self.request.user.username)
+
             return queryset
         elif ChatGroup.objects.filter(slug__endswith=self.request.user.username).exists():
             queryset = ChatGroup.objects.filter(slug__endswith=self.request.user.username)
-
             return queryset
 
 

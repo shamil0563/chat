@@ -5,15 +5,8 @@
 
 
 {% block content %}
-<h2>Профиль пользователя {{ user.username }}</h2>
-{% if user.first_name and user.last_name %}
-<p>Здравстуйте, {{ user.first_name }} {{ user.last_name }}!</p>
-{% else %}
-
-<p>Здравстуйте!</p>
-{% endif %}
 <h3>Запросы в друзья</h3>
-
+{% if friends %}
 {% for friend in friends %}
 <div class="card bg-light mt-3">
   <div class="card-header">
@@ -21,11 +14,16 @@
   </div>
   <div class="card-body">
     <h5 class="card-title">{{ friend.user.first_name }} {{ friend.user.last_name }}</h5>
-    {% if friend.sender != request.user %}<a href="{% url 'main:request_confirm' slug=friend.slug %}" class="btn btn-dark my-2 my-sm-0">Принять</a>{% endif %}
+    {% if friend.sender != request.user %}<a href="{% url 'main:request_confirm' slug=friend.slug %}" class="btn btn-dark my-2 my-sm-0">Принять</a>
     <a href="{% url 'main:delete_friend' slug=friend.slug %}" class="btn btn-dark my-2 my-sm-0">Отклонить</a>
-    <a href="#" class="btn btn-dark">Написать</a>
+    {% else %}
+    <a href="{% url 'main:delete_friend' slug=friend.slug %}" class="btn btn-dark my-2 my-sm-0">Отменить</a>
+    {% endif %}
+    <a href="{% url 'main:private_message' pk=friend.friend.pk %}"><button type="submit" class="btn btn-dark">Написать</button></a>
   </div>
-
 </div>
 {% endfor %}
+{% else %}
+<h5>Запросов в друзья нет!</h5>
+{% endif %}
 {% endblock %}

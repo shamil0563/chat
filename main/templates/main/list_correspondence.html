@@ -7,24 +7,24 @@
     {% for correspondence in correspondences %}
         {% if correspondence.user1.username == request.user.username %}
 
-                <div class="card bg-light mt-3">
+                <div class="card mt-3" style="border-radius: 10px">
                     <div class="card-header">
                         {{ correspondence.user2.username }}
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" >
                          <h5 class="card-title">{{ correspondence.message_set.all|first }}</h5>
-                        <a href="#" class="btn btn-dark">Перейти</a>
+                        <a href="{% url 'main:private_message' pk=correspondence.user2.pk %}"><button type="submit" class="btn btn-dark">Перейти</button></a>
                     </div>
                 </div>
         {% elif correspondence.user2.username == request.user.username %}
 
-                <div class="card bg-light mt-3">
+                <div class="card mt-3" style="border-radius: 10px">
                     <div class="card-header">
                         {{ correspondence.user1.username }}
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{ correspondence.message_set.all|first }}</h5>
-                        <a href="#" class="btn btn-dark">Перейти</a>
+                        <a href="{% url 'main:private_message' pk=correspondence.user1.pk %}"><button type="submit" class="btn btn-dark">Перейти</button></a>
                     </div>
                 </div>
         {% endif %}

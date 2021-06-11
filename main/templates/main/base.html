@@ -45,9 +45,6 @@
           </li>
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'main:room' %}">Общий чат</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="{% url 'main:messages' %}">Приватный</a>
           </li>
           <li class="nav-item">
