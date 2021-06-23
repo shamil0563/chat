@@ -22,7 +22,7 @@
   <div class="card-body">
     <h5 class="card-title">{{ useradd.first_name }} {{ useradd.last_name }}</h5>
     {% if useradd.address %}<p class="card-text">Город: {{ useradd.address }}</p>{% endif %}
-    {% if useradd.birth_date %}<p class="card-text">Возраст: {{ useradd.birth_date }}</p>{% endif %}
+    {% if useradd.birth_date %}<p class="card-text">Возраст : {{ useradd.birth_date }}</p>{% endif %}
    {% if useradd.pk not in friends %}
     <a href="{% url 'main:add_friend2' slug=useradd.username %}"><button type="submit" class="btn btn-dark">Добавить в друзья</button></a>
     {% else %}
